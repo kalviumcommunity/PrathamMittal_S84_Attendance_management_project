@@ -1,5 +1,8 @@
 package com.school;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Main {
     public static void main(String[] args) {
         System.out.println("--- School Management System ---");
@@ -24,6 +27,17 @@ public class Main {
             if (course != null) course.displayDetails();
         }
 
-        System.out.println("\nPart 3: Constructor & Auto-ID Generation Complete.");
+        // Part 4: Attendance Recording
+        List<AttendanceRecord> attendanceLog = new ArrayList<>();
+        attendanceLog.add(new AttendanceRecord(students[0].getStudentId(), courses[0].getCourseId(), "Present"));
+        attendanceLog.add(new AttendanceRecord(students[1].getStudentId(), courses[1].getCourseId(), "Absent"));
+        attendanceLog.add(new AttendanceRecord(students[2].getStudentId(), courses[2].getCourseId(), "Late")); // invalid
+
+        System.out.println("\nAttendance Log:");
+        for (AttendanceRecord record : attendanceLog) {
+            record.displayRecord();
+        }
+
+        System.out.println("\nPart 4: Encapsulation & Attendance Recording Complete.");
     }
 }
