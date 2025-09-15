@@ -1,6 +1,6 @@
 # Attendance Management System
 
-A simple **Java-based School Management System** demonstrating **Object-Oriented Programming (OOP)** concepts such as **Encapsulation, Inheritance, and Polymorphism**.  
+A simple **Java-based School Management System** demonstrating **Object-Oriented Programming (OOP)** concepts such as **Encapsulation, Inheritance, Polymorphism, and Interface-driven design**.  
 The project evolves in parts, each introducing new concepts.
 
 ---
@@ -40,6 +40,19 @@ In this part of the project, we:
 
 ---
 
+## Part 6: Interface-Driven Persistence with Storage
+
+In this part of the project, we:
+
+- Defined a **`Storable`** interface with a `toDataString()` method.
+- Modified `Student`, `Course`, and `AttendanceRecord` classes to implement `Storable` and return their data in **CSV format**.
+- Created a `FileStorageService` class with a `saveData(List<? extends Storable> items, String filename)` method to write `Storable` objects to text files.
+- Used `try-with-resources` for safe file handling (`PrintWriter`, `FileWriter`).
+- Demonstrated saving students, courses, and attendance records to separate files (`students.txt`, `courses.txt`, `attendance_log.txt`) inside `Main.java`.
+- Showed how interfaces add flexibility, allowing different object types to be handled uniformly.
+
+---
+
 ## Folder Structure
 
 ```
@@ -48,16 +61,25 @@ src/
       └── school/
            ├── AttendanceRecord.java
            ├── Course.java
+           ├── FileStorageService.java
            ├── Main.java
            ├── Person.java
            ├── Staff.java
+           ├── Storable.java
            ├── Student.java
            └── Teacher.java
 ```
 
+Generated output files:
+```
+students.txt
+courses.txt
+attendance_log.txt
+```
+
 ---
 
-## Sample Output
+## Sample Console Output
 
 ```
 --- School Management System ---
@@ -92,9 +114,54 @@ Attendance Log:
 Attendance Record -> Student ID: 1, Course ID: C101, Status: Present
 Attendance Record -> Student ID: 2, Course ID: C102, Status: Absent
 Attendance Record -> Student ID: 3, Course ID: C103, Status: Invalid
+Data saved to students.txt
+Data saved to courses.txt
+Data saved to attendance_log.txt
 
-Part 5: Inheritance Hierarchy Established.
+Part 6: Interface-Driven Persistence Implemented.
 ```
 
 ---
 
+## Sample File Outputs
+
+**students.txt**
+```
+1,Alice Wonderland,Grade 10
+2,Bob The Builder,Grade 11
+3,Charlie Chaplin,Grade 12
+```
+
+**courses.txt**
+```
+101,Intro to Programming
+102,Linear Algebra
+103,Data Structures
+```
+
+**attendance_log.txt**
+```
+1,101,Present
+2,102,Absent
+3,103,Invalid
+```
+
+---
+
+## How to Run
+
+1. Navigate to the project root directory.
+2. Compile:
+   ```bash
+   javac src/com/school/*.java
+   ```
+3. Run:
+   ```bash
+   java -cp src com.school.Main
+   ```
+4. Check the generated files:
+   - `students.txt`
+   - `courses.txt`
+   - `attendance_log.txt`
+
+---
