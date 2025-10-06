@@ -7,10 +7,12 @@ import java.util.stream.Collectors;
 public class AttendanceService {
     private List<AttendanceRecord> attendanceLog;
     private FileStorageService storageService;
+    private RegistrationService registrationService;
 
-    public AttendanceService(FileStorageService storageService) {
+    public AttendanceService(FileStorageService storageService, RegistrationService registrationService) {
         this.attendanceLog = new ArrayList<>();
         this.storageService = storageService;
+        this.registrationService = registrationService;
     }
 
     public void markAttendance(Student student, Course course, String status) {
@@ -18,28 +20,14 @@ public class AttendanceService {
         attendanceLog.add(record);
     }
 
-    public void markAttendance(int studentId, int courseId, String status, List<Student> allStudents, List<Course> allCourses) {
-        Student student = findStudentById(studentId, allStudents);
-        Course course = findCourseById(courseId, allCourses);
+    public void markAttendance(int studentId, int courseId, String status) {
+        Student student = registrationService.findStudentById(studentId);
+        Course course = registrationService.findCourseById(courseId);
         if (student != null && course != null) {
             markAttendance(student, course, status);
         } else {
             System.out.println("Error: Student ID " + studentId + " or Course ID " + courseId + " not found.");
         }
-    }
-
-    private Student findStudentById(int studentId, List<Student> allStudents) {
-        return allStudents.stream()
-                .filter(s -> s.getId() == studentId)
-                .findFirst()
-                .orElse(null);
-    }
-
-    private Course findCourseById(int courseId, List<Course> allCourses) {
-        return allCourses.stream()
-                .filter(c -> c.getCourseId() == courseId)
-                .findFirst()
-                .orElse(null);
     }
 
     public void displayAttendanceLog() {
