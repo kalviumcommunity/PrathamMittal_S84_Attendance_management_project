@@ -4,6 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
+    public static void displaySchoolDirectory(List<Person> people) {
+        System.out.println("\nSchool Directory:");
+        for (Person person : people) {
+            person.displayDetails();
+        }
+    }
+
     public static void main(String[] args) {
         System.out.println("--- School Management System ---");
 
@@ -29,23 +36,18 @@ public class Main {
         courses.add(new Course("Linear Algebra"));
         courses.add(new Course("Data Structures"));
 
-        // Display Students
-        System.out.println("\nRegistered Students:");
-        for (Student student : students) {
-            student.displayDetails();
-        }
-
-        // Display Teachers
-        System.out.println("\nTeaching Staff:");
+        // Create schoolPeople list for polymorphism
+        ArrayList<Person> schoolPeople = new ArrayList<>();
+        schoolPeople.addAll(students);
         for (Teacher teacher : teachers) {
-            teacher.displayDetails();
+            schoolPeople.add(teacher);
+        }
+        for (Staff staff : staffMembers) {
+            schoolPeople.add(staff);
         }
 
-        // Display Staff
-        System.out.println("\nNon-Teaching Staff:");
-        for (Staff staff : staffMembers) {
-            staff.displayDetails();
-        }
+        // Display School Directory
+        displaySchoolDirectory(schoolPeople);
 
         // Display Courses
         System.out.println("\nAvailable Courses:");
@@ -55,21 +57,29 @@ public class Main {
 
         // Attendance Records
         ArrayList<AttendanceRecord> attendanceLog = new ArrayList<>();
-        attendanceLog.add(new AttendanceRecord(students.get(0).getId(), courses.get(0).getCourseId(), "Present"));
-        attendanceLog.add(new AttendanceRecord(students.get(1).getId(), courses.get(1).getCourseId(), "Absent"));
-        attendanceLog.add(new AttendanceRecord(students.get(2).getId(), courses.get(2).getCourseId(), "Late")); // invalid
+        attendanceLog.add(new AttendanceRecord(students.get(0), courses.get(0), "Present"));
+        attendanceLog.add(new AttendanceRecord(students.get(1), courses.get(1), "Absent"));
+        attendanceLog.add(new AttendanceRecord(students.get(2), courses.get(2), "Late")); // invalid
 
         System.out.println("\nAttendance Log:");
         for (AttendanceRecord record : attendanceLog) {
             record.displayRecord();
         }
 
+        // Prepare students list for saving (filtering from schoolPeople)
+        ArrayList<Student> studentsToSave = new ArrayList<>();
+        for (Person person : schoolPeople) {
+            if (person instanceof Student) {
+                studentsToSave.add((Student) person);
+            }
+        }
+
         // Save Data to Files
         FileStorageService storageService = new FileStorageService();
-        storageService.saveData(students, "students.txt");
+        storageService.saveData(studentsToSave, "students.txt");
         storageService.saveData(courses, "courses.txt");
         storageService.saveData(attendanceLog, "attendance_log.txt");
 
-        System.out.println("\nPart 6: Interface-Driven Persistence Implemented.");
+        System.out.println("\nPart 7: Polymorphic Behaviour in Attendance and Displaying Reports Implemented.");
     }
 }
