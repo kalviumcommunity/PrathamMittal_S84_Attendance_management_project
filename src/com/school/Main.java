@@ -14,6 +14,10 @@ public class Main {
     public static void main(String[] args) {
         System.out.println("--- School Management System ---");
 
+        // FileStorageService and AttendanceService
+        FileStorageService storageService = new FileStorageService();
+        AttendanceService attendanceService = new AttendanceService(storageService);
+
         // Students
         ArrayList<Student> students = new ArrayList<>();
         students.add(new Student("Alice Wonderland", "Grade 10"));
@@ -55,16 +59,19 @@ public class Main {
             course.displayDetails();
         }
 
-        // Attendance Records
-        ArrayList<AttendanceRecord> attendanceLog = new ArrayList<>();
-        attendanceLog.add(new AttendanceRecord(students.get(0), courses.get(0), "Present"));
-        attendanceLog.add(new AttendanceRecord(students.get(1), courses.get(1), "Absent"));
-        attendanceLog.add(new AttendanceRecord(students.get(2), courses.get(2), "Late")); // invalid
+        // Mark Attendance using overloaded methods
+        attendanceService.markAttendance(students.get(0), courses.get(0), "Present");
+        attendanceService.markAttendance(students.get(1), courses.get(1), "Absent");
+        attendanceService.markAttendance(3, 103, "Late", students, courses); // Invalid status
+        attendanceService.markAttendance(999, 101, "Present", students, courses); // Invalid student ID
 
-        System.out.println("\nAttendance Log:");
-        for (AttendanceRecord record : attendanceLog) {
-            record.displayRecord();
-        }
+        // Display Attendance using overloaded methods
+        attendanceService.displayAttendanceLog();
+        attendanceService.displayAttendanceLog(students.get(0));
+        attendanceService.displayAttendanceLog(courses.get(1));
+
+        // Save Attendance Data
+        attendanceService.saveAttendanceData();
 
         // Prepare students list for saving (filtering from schoolPeople)
         ArrayList<Student> studentsToSave = new ArrayList<>();
@@ -75,11 +82,9 @@ public class Main {
         }
 
         // Save Data to Files
-        FileStorageService storageService = new FileStorageService();
         storageService.saveData(studentsToSave, "students.txt");
         storageService.saveData(courses, "courses.txt");
-        storageService.saveData(attendanceLog, "attendance_log.txt");
 
-        System.out.println("\nPart 7: Polymorphic Behaviour in Attendance and Displaying Reports Implemented.");
+        System.out.println("\nPart 8: Overloaded Commands for Attendance Marking and Querying Implemented.");
     }
 }
