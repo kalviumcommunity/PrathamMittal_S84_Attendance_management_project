@@ -2,7 +2,6 @@ package com.school;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class RegistrationService {
     private List<Student> students;
@@ -31,8 +30,18 @@ public class RegistrationService {
         staffMembers.add(new Staff(name, role));
     }
 
-    public void createCourse(String courseName) {
-        courses.add(new Course(courseName));
+    public void createCourse(String courseName, int capacity) {
+        courses.add(new Course(courseName, capacity));
+    }
+
+    public boolean enrollStudentInCourse(Student student, Course course) {
+        if (course.addStudent(student)) {
+            System.out.println("Student " + student.getName() + " enrolled in " + course.getCourseName());
+            return true;
+        } else {
+            System.out.println("Enrollment failed: " + course.getCourseName() + " is at full capacity.");
+            return false;
+        }
     }
 
     public List<Student> getStudents() {
